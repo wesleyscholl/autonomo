@@ -20,14 +20,12 @@
     "codegen",
     "machine-learning",
     "gemini",
-    "openai",
     "showcase"
   ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "openai": "^4.68.1",
     "express": "^4.21.0",
     "cors": "^2.8.5",
     "helmet": "^8.0.0",

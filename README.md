@@ -41,7 +41,7 @@ autonomo/
 
 ### Prerequisites
 - Node.js 18+ 
-- AI API keys (Gemini/OpenAI)
+- Gemini API key
 - Git (for evolution tracking)
 
 ### Installation
@@ -54,9 +54,9 @@ cd autonomo
 # Install dependencies
 npm install
 
-# Configure AI APIs
+# Configure AI API
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your Gemini API key
 
 # Start the evolution
 npm start
@@ -114,8 +114,7 @@ module.exports = {
 
 | Technology | Purpose | Showcase Value |
 |------------|---------|---------------|
-| **Google Gemini** | Code generation & planning | Latest LLM integration |
-| **OpenAI GPT-4** | Advanced reasoning & reflection | Multi-LLM orchestration |
+| **Google Gemini** | Code generation, planning & reasoning | Latest LLM integration |
 | **VM2 Sandboxing** | Safe code execution | Security-first architecture |
 | **Express.js** | Dynamic API endpoints | Real-time feature deployment |
 | **Simple-Git** | Evolution versioning | Automated DevOps practices |
@@ -185,7 +184,7 @@ The app maintains detailed logs of its growth:
 This project demonstrates:
 
 ### 🔥 Cutting-Edge Skills
-- **AI Agent Orchestration**: Multi-LLM coordination
+- **AI Agent Orchestration**: Advanced Gemini integration
 - **Dynamic Code Generation**: Runtime feature creation
 - **Autonomous Systems**: Self-improving applications
 - **Security Engineering**: Safe AI code execution

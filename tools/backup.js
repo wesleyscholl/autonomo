@@ -149,7 +149,7 @@ async function createBackupManifest() {
       requirements: [
         'Node.js 18+',
         'npm packages from package.json',
-        'API keys configured in .env'
+        'Gemini API key configured in .env'
       ]
     }
   };

@@ -163,11 +163,11 @@ async function checkSystemHealth() {
   }
 
   // Check environment variables
-  const requiredEnvVars = ['GEMINI_API_KEY', 'OPENAI_API_KEY'];
+  const requiredEnvVars = ['GEMINI_API_KEY'];
   const missingEnvVars = requiredEnvVars.filter(env => !process.env[env]);
   
   if (missingEnvVars.length === 0) {
-    checks.push({ name: 'Environment Variables', status: 'healthy', message: 'All API keys configured' });
+    checks.push({ name: 'Environment Variables', status: 'healthy', message: 'Gemini API key configured' });
   } else {
     checks.push({ name: 'Environment Variables', status: 'warning', message: `Missing: ${missingEnvVars.join(', ')}` });
   }

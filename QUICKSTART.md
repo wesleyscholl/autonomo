@@ -6,7 +6,7 @@ Welcome to **Autonomo** - The Living App! This guide will get you up and running
 
 - **Node.js 18+** - [Download here](https://nodejs.org/)
 - **Git** - For evolution tracking
-- **AI API Keys** - Gemini and/or OpenAI
+- **Gemini API Key** - [Get it here](https://makersuite.google.com/app/apikey)
 
 ## ⚡ Installation
 
@@ -18,16 +18,15 @@ cd autonomo
 npm install
 ```
 
-### 2. Configure API Keys
+### 2. Configure API Key
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your API keys:
+Edit `.env` with your Gemini API key:
 ```env
 GEMINI_API_KEY=your_gemini_key_here
-OPENAI_API_KEY=your_openai_key_here
 ```
 
 ### 3. Start Autonomo
@@ -127,7 +126,7 @@ curl -X POST http://localhost:3000/evolve \
 
 **1. API Key Errors**
 ```bash
-# Check if keys are loaded
+# Check if key is loaded
 node -e "require('dotenv').config(); console.log(!!process.env.GEMINI_API_KEY)"
 ```
 
@@ -170,6 +169,7 @@ LOG_LEVEL=debug npm start
 - Run `npm run status` for system health
 - Use `node tools/reset.js` to start fresh
 - View the full README.md for architecture details
+- Get Gemini API key at https://makersuite.google.com/app/apikey
 
 ---
 

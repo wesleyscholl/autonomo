@@ -1,63 +1,31 @@
 /**
  * 💻 Coder Agent
- * Generates production-ready JavaScript code based on plans
+ * Generates production-ready JavaScript code based on plans using Gemini
  */
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { OpenAI } = require('openai');
 
 class CoderAgent {
   constructor() {
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
-    this.geminiModel = null;
+    this.model = null;
   }
 
   async initialize() {
-    this.geminiModel = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+    this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
   }
 
   async generateCode(plan) {
-    // Use different AI models based on complexity
-    if (plan.complexity === 'high') {
-      return await this.generateWithOpenAI(plan);
-    } else {
-      return await this.generateWithGemini(plan);
-    }
+    return await this.generateWithGemini(plan);
   }
 
   async generateWithGemini(plan) {
     const prompt = this.buildCodingPrompt(plan);
     
-    const result = await this.geminiModel.generateContent(prompt);
+    const result = await this.model.generateContent(prompt);
     const response = await result.response;
     const code = response.text();
 
-    return this.extractAndValidateCode(code, plan);
-  }
-
-  async generateWithOpenAI(plan) {
-    const prompt = this.buildCodingPrompt(plan);
-    
-    const completion = await this.openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert Node.js developer creating production-ready code for a self-evolving application."
-        },
-        {
-          role: "user",
-          content: prompt
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 2000
-    });
-
-    const code = completion.choices[0].message.content;
     return this.extractAndValidateCode(code, plan);
   }
 
@@ -77,6 +45,7 @@ REQUIREMENTS:
 6. Include usage examples in comments
 7. Make it compatible with Express.js integration
 8. Ensure thread safety and resource cleanup
+9. Optimize for readability and maintainability
 
 CODE STRUCTURE:
 - Module should export an object with metadata and methods
