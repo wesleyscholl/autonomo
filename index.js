@@ -331,17 +331,17 @@ class Autonomo {
       this.app.listen(this.port, () => {
         console.log(chalk.cyan.bold(`
 ╔═══════════════════════════════════════════════════════════════╗
-║                    🧠 AUTONOMO - LIVING APP                   ║
-║                                                              ║
-║  🚀 Server running on http://localhost:${this.port}               ║
-║  🤖 AI Agents: ${this.agents.getActiveAgents().join(', ')}                     ║
-║  ⚡ Features loaded: ${this.features.getActiveFeatures().length}                             ║
-║  🔒 Safety mode: ${process.env.ENABLE_SANDBOX ? 'ENABLED' : 'DISABLED'}                     ║
-║                                                              ║
-║  Ready to evolve! Try:                                       ║
-║  • POST /evolve {"request": "Add a weather API"}             ║
-║  • GET  /features                                            ║
-║  • GET  /health                                              ║
+║                    🧠 AUTONOMO - THE LIVING APP               ║
+║                                                               ║
+║  🚀 Server running on http://localhost:${this.port}                   ║
+║  🤖 AI Agents: ${this.agents.getActiveAgents().join(', ')}            ║
+║  ⚡ Features loaded: ${this.features.getActiveFeatures().length}                                        ║
+║  🔒 Safety mode: ${process.env.ENABLE_SANDBOX ? 'ENABLED' : 'DISABLED'}                                     ║
+║                                                               ║
+║  Ready to evolve! Try:                                        ║
+║  • POST /evolve {"request": "Add a weather API"}              ║
+║  • GET  /features                                             ║
+║  • GET  /health                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
         `));
       });
