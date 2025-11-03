@@ -219,7 +219,87 @@ This is a showcase project, but contributions that demonstrate advanced AI/ML te
 3. **Learning Algorithms**: Feedback loops, reinforcement learning
 4. **Integration Examples**: Database evolution, API generation
 
-## 📄 License
+## � Project Status
+
+**Status:** 🚧 **Prototype/Concept Demo**
+
+### Current State
+- ✅ Core architecture implemented
+- ✅ Multi-agent system (planner, coder, executor, reflector)
+- ✅ Dynamic feature loading system
+- ✅ Safety manager with sandboxing
+- ✅ Evolution tracking
+- ⚠️ Limited real-world testing
+- ⚠️ Experimental stage
+
+### What Works
+- Agent orchestration framework
+- Dynamic code generation and loading
+- Safety checks and validation
+- CLI interface
+- Evolution logging
+
+### What Needs Work
+- More robust code validation
+- Expanded safety constraints
+- Better error recovery
+- Production-grade security
+- Performance optimization
+
+## 🗺️ Roadmap
+
+### v0.2 (In Progress)
+- 🔄 Enhanced safety validation
+- 🔄 Better error handling and recovery
+- 🔄 Feature dependency management
+- 🔄 Improved test coverage
+
+### v0.3 (Planned)
+- 📋 Web UI for monitoring evolution
+- 📋 Feature marketplace/sharing
+- 📋 Advanced learning from usage patterns
+- 📋 Multi-instance coordination
+
+### v1.0 (Future Vision)
+- 📋 Production-ready security model
+- 📋 Distributed agent network
+- 📋 Cross-app feature sharing
+- 📋 Enterprise deployment templates
+- 📋 Advanced self-healing capabilities
+
+## 🎯 Next Steps
+
+### For Experimenters
+1. Run evolution cycles and observe behavior
+2. Review generated code in `dynamic/` folder
+3. Add custom safety rules
+4. Experiment with different prompts
+
+### For Developers
+1. Study the multi-agent architecture
+2. Contribute safety improvements
+3. Add new agent types
+4. Improve code validation
+
+### For Production
+⚠️ **Not production-ready yet!** Use as:
+- Learning resource for AI agent systems
+- Prototype for self-evolving architectures
+- Research into autonomous software
+- Educational demonstration
+
+## ⚠️ Safety & Ethics
+
+This project explores autonomous code generation. Important considerations:
+
+- **Sandbox Everything:** Never run in production without proper isolation
+- **Review Generated Code:** Always inspect before deploying
+- **Rate Limiting:** Prevent runaway generation
+- **Resource Limits:** Cap CPU, memory, and API usage
+- **Human Oversight:** Keep humans in the loop
+- **Ethical Use:** Consider implications of self-modifying systems
+
+## �📄 License
 
 MIT License - Feel free to use this as inspiration for your own AI showcase projects!
 
@@ -228,8 +308,10 @@ MIT License - Feel free to use this as inspiration for your own AI showcase proj
 **⚡ Ready to watch an app write itself? Clone, configure, and let the evolution begin!**
 
 ```bash
-git clone https://github.com/your-username/autonomo.git
+git clone https://github.com/wesleyscholl/autonomo.git
 cd autonomo && npm install && npm start
 ```
 
 *"The future of software development is here—and it writes itself."*
+
+**Note:** This is an experimental project exploring AI-assisted software evolution. Not recommended for production use without significant hardening and security review.
