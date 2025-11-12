@@ -1,5 +1,7 @@
 # 🧠 Autonomo - The Living App
 
+**Status**: Experimental self-evolving AI system demonstrating autonomous code generation - cutting-edge research in AI-driven software development.
+
 > **An autonomous, self-evolving Node.js application powered by AI agents that writes its own features and grows more intelligent over time.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
