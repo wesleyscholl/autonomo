@@ -9,7 +9,12 @@
     "evolve": "node index.js --evolve",
     "status": "node tools/status.js",
     "reset": "node tools/reset.js",
-    "backup": "node tools/backup.js"
+    "backup": "node tools/backup.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose",
+    "test:ci": "jest --ci --coverage --maxWorkers=2"
   },
   "keywords": [
     "ai",

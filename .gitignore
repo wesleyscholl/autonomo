@@ -1,6 +1,6 @@
 node_modules/
 .env
-logs/*.log
+logs/
 dynamic/backup/
 *.tmp
 .DS_Store
