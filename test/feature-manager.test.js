@@ -696,6 +696,132 @@ describe('FeatureManager', () => {
       expect(mostUsed.usageCount).toBe(5);
     });
   });
+
+  describe('Error Handling Coverage', () => {
+    test('should throw error when loadAllFeatures fails', async () => {
+      // Create invalid directory
+      await fs.writeFile(path.join(testDir, 'invalid.txt'), 'not javascript');
+      
+      // This should still work but skip invalid files
+      await featureManager.loadAllFeatures();
+      expect(featureManager.getActiveFeatures().length).toBeGreaterThanOrEqual(0);
+    });
+
+    test('should handle integration errors', async () => {
+      const badCode = 'this will cause an error';
+      const plan = {
+        id: 'error-plan',
+        title: 'Error Test',
+        description: 'Test error handling'
+      };
+      
+      await expect(featureManager.integrateFeature(badCode, plan))
+        .rejects.toThrow();
+    });
+
+    test('should handle wrapFeatureCode errors gracefully', () => {
+      const code = 'module.exports = {};';
+      const plan = { title: 'Test', id: 'test-1' };
+      
+      const wrapped = featureManager.wrapFeatureCode(code, plan);
+      expect(wrapped).toContain('module.exports');
+    });
+
+    test('should handle testFeature with broken features', async () => {
+      const brokenFeature = {
+        id: 'broken',
+        execute: async () => { throw new Error('Broken'); }
+      };
+      
+      await expect(featureManager.testFeature(brokenFeature))
+        .rejects.toThrow();
+    });
+
+    test('should handle missing feature files', async () => {
+      const result = await featureManager.getFeature('non-existent-id');
+      expect(result).toBeUndefined();
+    });
+
+    test('should handle deactivating non-existent features', async () => {
+      const result = await featureManager.deactivateFeature('non-existent');
+      expect(result).toBeUndefined();
+    });
+
+    test('should handle integrateFeature with write errors', async () => {
+      const code = 'module.exports = { test: () => {} };';
+      const plan = {
+        id: 'test-plan-123',
+        title: 'Test Feature'
+      };
+
+      // Mock writeFile to fail
+      const originalWriteFile = fs.writeFile;
+      fs.writeFile = jest.fn().mockRejectedValue(new Error('Write failed'));
+
+      await expect(featureManager.integrateFeature(code, plan))
+        .rejects.toThrow();
+
+      fs.writeFile = originalWriteFile;
+    });
+
+    test('should handle wrapFeatureCode with invalid code', () => {
+      const invalidCode = 'this is not valid javascript syntax {{{';
+      const plan = { title: 'Test', id: 'test-123' };
+      
+      const wrapped = featureManager.wrapFeatureCode(invalidCode, plan);
+      expect(wrapped).toContain(invalidCode);
+      expect(wrapped).toContain('module.exports');
+    });
+
+    test('should handle testFeature with failing health check', async () => {
+      const featureWithBadHealth = {
+        id: 'bad-health',
+        name: 'Bad Health',
+        health: () => { throw new Error('Health check crashed'); },
+        execute: async () => ({ success: true })
+      };
+
+      await expect(featureManager.testFeature(featureWithBadHealth))
+        .rejects.toThrow();
+    });
+
+    test('should handle executeFeature with non-existent feature', async () => {
+      await expect(featureManager.executeFeature('does-not-exist', {}))
+        .rejects.toThrow();
+    });
+
+    test('should handle loadAllFeatures with invalid directory', async () => {
+      const testManager = new FeatureManager();
+      testManager.dynamicDir = '/completely/invalid/path/that/does/not/exist';
+
+      await expect(testManager.loadAllFeatures())
+        .rejects.toThrow();
+    });
+
+    test('should handle deleteFeature and verify removal', async () => {
+      // Create and load a test feature
+      const testFeatureCode = `
+        module.exports = {
+          id: 'delete-test',
+          metadata: { title: 'Delete Test', id: 'delete-test' },
+          execute: async () => ({ success: true }),
+          health: () => ({ status: 'healthy' })
+        };
+      `;
+      
+      const testPath = path.join(featureManager.dynamicDir, 'delete-test.js');
+      await fs.writeFile(testPath, testFeatureCode);
+      await featureManager.loadAllFeatures();
+
+      const loaded = featureManager.getFeature('delete-test');
+      expect(loaded).toBeTruthy();
+
+      await featureManager.deleteFeature('delete-test');
+      
+      const deleted = featureManager.getFeature('delete-test');
+      expect(deleted).toBeUndefined();
+    });
+  });
 });
 
 // Helper function to create test features

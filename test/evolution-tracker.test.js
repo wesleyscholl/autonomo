@@ -639,4 +639,77 @@ describe('EvolutionTracker', () => {
       await expect(evolutionTracker.loadEvolutionHistory()).rejects.toThrow();
     });
   });
+
+  describe('Error Handling', () => {
+    test('should handle snapshot creation errors', async () => {
+      const invalidSnapshot = {
+        id: 'test-snapshot-123',
+        mode: 'test',
+        success: true,
+        code: 'test code'
+      };
+
+      // This should not throw, even with minimal data
+      await expect(evolutionTracker.createEvolutionSnapshot(invalidSnapshot))
+        .resolves.not.toThrow();
+    });
+
+    test('should handle folder size calculation for non-existent paths', async () => {
+      const size = await evolutionTracker.getFolderSize('/does/not/exist');
+      expect(size).toBe(0);
+    });
+
+    test('should handle evolution recording with missing plan', async () => {
+      const evolutionWithNoPlan = {
+        mode: 'test',
+        success: true,
+        // plan is missing
+      };
+
+      await evolutionTracker.recordEvolution(evolutionWithNoPlan);
+      const history = await evolutionTracker.getEvolutionHistory();
+      
+      const recorded = history.find(e => e.mode === 'test');
+      expect(recorded).toBeTruthy();
+      expect(recorded.plan).toBeUndefined();
+    });
+
+    test('should handle getEvolutionHistory with limit', async () => {
+      // Record multiple evolutions
+      for (let i = 0; i < 5; i++) {
+        await evolutionTracker.recordEvolution({
+          mode: `test-${i}`,
+          success: true,
+          plan: { id: `plan-${i}`, title: `Plan ${i}` }
+        });
+      }
+
+      const limitedHistory = await evolutionTracker.getEvolutionHistory(3);
+      expect(limitedHistory.length).toBeLessThanOrEqual(3);
+    });
+
+    test('should handle saveEvolutionHistory', async () => {
+      // saveEvolutionHistory catches errors internally, so it won't throw
+      await evolutionTracker.recordEvolution({
+        mode: 'test-save',
+        success: true,
+        plan: { id: 'plan-save', title: 'Test Save' }
+      });
+      
+      await expect(evolutionTracker.saveEvolutionHistory()).resolves.not.toThrow();
+    });
+
+    test('should handle gatherMetrics from evolution directory', async () => {
+      const metrics = await evolutionTracker.gatherMetrics();
+      expect(metrics).toBeTruthy();
+      expect(metrics.diskUsage).toBeTruthy();
+      expect(typeof metrics.diskUsage.total).toBe('number');
+    });
+
+    test('should handle getEvolutionEmoji for different categories', () => {
+      const failedEvolution = { success: false };
+      const emoji = evolutionTracker.getEvolutionEmoji(failedEvolution);
+      expect(emoji).toBe('💥');
+    });
+  });
 });

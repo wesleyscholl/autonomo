@@ -17,13 +17,25 @@ class PlannerAgent {
   }
 
   async createPlan(request, context) {
-    const prompt = this.buildPlanningPrompt(request, context);
+    // Ensure context has required fields
+    const safeContext = {
+      mode: 'autonomous',
+      currentFeatures: [],
+      systemState: {},
+      ...(context || {})
+    };
+    
+    const prompt = this.buildPlanningPrompt(request, safeContext);
+    
+    if (!this.model) {
+      throw new Error('Planner not initialized. Call initialize() first.');
+    }
     
     const result = await this.model.generateContent(prompt);
     const response = await result.response;
     const planText = response.text();
 
-    return this.parsePlan(planText, request, context);
+    return this.parsePlan(planText, request, safeContext);
   }
 
   buildPlanningPrompt(request, context) {
@@ -92,6 +104,7 @@ Create an innovative, well-thought-out plan that adds real value to the applicat
       // Add metadata
       plan.id = plan.id || uuidv4();
       plan.created = new Date();
+      plan.createdAt = new Date().toISOString();
       plan.originalRequest = request;
       plan.context = context;
       plan.agent = 'planner';
@@ -148,6 +161,27 @@ Create an innovative, well-thought-out plan that adds real value to the applicat
     };
 
     return await this.createPlan(request, context);
+  }
+
+  validatePlan(plan) {
+    // Required fields
+    if (!plan || !plan.title || !plan.description) {
+      return false;
+    }
+
+    // Valid categories
+    const validCategories = ['api', 'utility', 'ui', 'integration', 'data'];
+    if (plan.category && !validCategories.includes(plan.category)) {
+      return false;
+    }
+
+    // Valid complexity levels
+    const validComplexities = ['low', 'medium', 'high'];
+    if (plan.complexity && !validComplexities.includes(plan.complexity)) {
+      return false;
+    }
+
+    return true;
   }
 }
 
